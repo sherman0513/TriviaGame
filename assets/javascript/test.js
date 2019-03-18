@@ -1,5 +1,5 @@
 var question = [
-    {
+	{
         q: "Who was the first European Captain to hoist the Stanley Cup?",
         answers: ['A: Nicklas Lidstrom', 'B: Steve Yzerman', 'C: Wayne Gretzky', 'D: Sydney Crosby'],
         correctAnswer: 0
@@ -36,85 +36,81 @@ var incorrectAnswer = 0;
 var currentQuestion = 0;
 var i;
 
-var counter = 15;
+var counter = 30;
 var intervalId;
 
-$(document).ready(function () {
+$(document).ready(function() {
 
-    $('.seconds h2').hide();
-
-    //clicking on the start quiz button hides the start page and shows the quiz page while firing the showQuestion() function
-    $(".start a").on("click", function (e) {
-        e.preventDefault();
-        $(".start").hide();
-        $(".quiz").show();
+    
+//clicking on the start quiz button hides the start page and shows the quiz page while firing the showQuestion() function
+	$(".start a").on("click", function(e) {
+	    e.preventDefault();
+		$(".start").hide();
+		$(".quiz").show();
         showQuestion();
         timer();
         $('.results').hide();
-    });
+   });
 
-    //when you click the li in the quiz answers it adds a class that highlights the answer and removes the class from whatever has the .selected class
-    $(".quiz ul").on('click', 'li', function () {
-        $('.selected').removeClass('selected')
-        $(this).addClass('selected');
-    });
+//when you click the li in the quiz answers it adds a class that highlights the answer and removes the class from whatever has the .selected class
+   $(".quiz ul").on('click', 'li', function(){
+    $('.selected').removeClass('selected')   
+    $(this).addClass('selected');
+   });
 
-    //gives a click function to the submit button on the quiz. and makes sure an answer is being selected
-    $('.quiz a').click(function (e) {
-        e.preventDefault();
-        if ($('li.selected').length) {
-            var guess = parseInt($('li.selected').attr('id'));
-            checkAnswer(guess);
-        }
-        else {
-            alert('Please select an answer');
-        }
-    });
+//gives a click function to the submit button on the quiz. and makes sure an answer is being selected
+   $('.quiz a').click(function(e){
+    e.preventDefault();
+    if($('li.selected').length){
+       var guess = parseInt($('li.selected').attr('id'));
+        checkAnswer(guess);
+    }
+    else{
+        alert('Please select an answer');
+    }
+   });
 
-    //
-    $('.results a').click(function (e) {
-        e.preventDefault();
-        restartQuiz();
-    });
+//
+   $('.results a').click(function(e){
+       e.preventDefault();
+       restartQuiz();
+   });
 });
 
-setTimeout(fiftSeconds);
-
 function timer() {
-    intervalId = setInterval(fiftSeconds, 1000)
+    intervalId = setInterval(decrement, 1000)
+}
+
+function decrement() {
+    counter--;
+    $("#seconds").html("<h2>" + "Remaining Seconds: " + counter);
+    if (counter === 0) {
+        unAnswered++;
+        stop();
+        $("#answer").html("<p>Time is up! " + + "</p>")
+    }
 }
 
 function stop() {
     clearInterval(intervalId);
 }
 
-function fiftSeconds() {
-    counter--;
-    $(".seconds").html("<h2>" + "Remaining Seconds: " + counter);
-    stop();
-    return;
-}
-
-
-
-
-
 //This function changes the header to the current question's title, gets rid of the html in the <ul> and replaces it with the 
 //answers in the question array with what is in the variable
 function showQuestion() {
-    current = question[currentQuestion];
-    $(".quiz h2").text(current.q);
-    $(".quiz ul").html("");
-    for (i = 0; i < current.answers.length; i++) {
+	current = question[currentQuestion];
+	$(".quiz h2").text(current.q);
+	$(".quiz ul").html("");
+	for (i = 0; i < current.answers.length; i++) {
         var pick = current.answers[i];
         $(".quiz ul").append("<li id='" + i + "'>" + pick + "</li>");
-    };
+	};
 };
 
 //checks if the answer is correct if it is correct it will add an increment to the score variable, if it is not, nothing happens.
 function checkAnswer(guess) {
-
-    if (current.correctAnswer === guess) {
+   
+    if(current.correctAnswer === guess){
         correctAnswer++;
         $('.quiz').hide();
         $('.answer').html('Correct!');
@@ -123,17 +119,18 @@ function checkAnswer(guess) {
         incorrectAnswer++;
         $('.quiz').hide();
         $('.answer1').html('Wrong!');
-        $('.answer1').fadeOut(3000);
+        $('.answer1').fadeOut(3000); 
     }
 
     currentQuestion++;
     $('.quiz').delay(3000).show(currentQuestion);
+    
 
-
-    if (currentQuestion >= question.length) {
+    if(currentQuestion >= question.length){
         showSummary();
-    } else {
-        showQuestion();
+    } else{
+
+    showQuestion();
     };
 };
 
@@ -145,10 +142,10 @@ function showSummary() {
     $(".results p2").text('Incorrect ' + incorrectAnswer + ' out of ' + question.length + '! :(')
 }
 
-function restartQuiz() {
+function restartQuiz(){
     correctAnswer = 0;
     currentQuestion = 0;
     $('.results').hide();
     $('.quiz').show();
-    showQuestion();
+     showQuestion();
 }
