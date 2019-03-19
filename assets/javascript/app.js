@@ -30,14 +30,14 @@ var question = [
     },
 ];
 var guess;
-var score = 0;
+
 var correctAnswer = 0;
 var incorrectAnswer = 0;
 var currentQuestion = 0;
-var i;
+// var i;
 
-var counter = 15;
-var intervalId;
+var counter = 16;
+// var intervalId;
 
 $(document).ready(function () {
 
@@ -49,7 +49,6 @@ $(document).ready(function () {
         $(".start").hide();
         $(".quiz").show();
         showQuestion();
-        timer();
         $('.results').hide();
     });
 
@@ -62,37 +61,40 @@ $(document).ready(function () {
     //gives a click function to the submit button on the quiz. and makes sure an answer is being selected
     $('.quiz a').click(function (e) {
         e.preventDefault();
-        if ($('li.selected').length) {
-            var guess = parseInt($('li.selected').attr('id'));
-            checkAnswer(guess);
-        }
-        else {
-            alert('Please select an answer');
-        }
+        var guess = parseInt($('li.selected').attr('id'));
+        checkAnswer(guess);
+        stop();
     });
 
     //
-    $('.results a').click(function (e) {
+    $(".results a").click(function (e) {
         e.preventDefault();
         restartQuiz();
     });
 });
 
-setTimeout(fiftSeconds);
-
+// have my function timer
+// having trouble getting timer to reset
 function timer() {
-    intervalId = setInterval(fiftSeconds, 1000)
+    intervalId = setInterval(decrement, 1000)
 }
 
 function stop() {
     clearInterval(intervalId);
+    counter = 16;
 }
 
-function fiftSeconds() {
+
+function decrement() {
     counter--;
     $(".seconds").html("<h2>" + "Remaining Seconds: " + counter);
-    stop();
-    return;
+    if (counter <= 0) {
+        stop();
+    }
+}
+
+function endGame() {
+    clearInterval(intervalId)
 }
 
 
@@ -102,6 +104,7 @@ function fiftSeconds() {
 //This function changes the header to the current question's title, gets rid of the html in the <ul> and replaces it with the 
 //answers in the question array with what is in the variable
 function showQuestion() {
+    timer();
     current = question[currentQuestion];
     $(".quiz h2").text(current.q);
     $(".quiz ul").html("");
@@ -112,23 +115,23 @@ function showQuestion() {
 };
 
 //checks if the answer is correct if it is correct it will add an increment to the score variable, if it is not, nothing happens.
+// tried adding when the code is correct-or-wrong is displayed after questions is answered
 function checkAnswer(guess) {
 
     if (current.correctAnswer === guess) {
         correctAnswer++;
-        $('.quiz').hide();
-        $('.answer').html('Correct!');
-        $('.answer').fadeOut(3000);
+        // stop();
+        $('.answer').text('Correct!');
+        // $('.answer').fadeOut(3000);
     } else {
         incorrectAnswer++;
-        $('.quiz').hide();
-        $('.answer1').html('Wrong!');
-        $('.answer1').fadeOut(3000);
+        // stop();
+        $('.answer1').text('Wrong!');
+        // $('.answer1').fadeOut(3000);
     }
 
     currentQuestion++;
-    $('.quiz').delay(3000).show(currentQuestion);
-
+    // $('.quiz').show(currentQuestion);
 
     if (currentQuestion >= question.length) {
         showSummary();
@@ -137,8 +140,10 @@ function checkAnswer(guess) {
     };
 };
 
-//hides the quiz page and shows the summary page while injecting the congratulations text into the summary page
+//hides the quiz page and shows the summary page of how many questions were guessed right
 function showSummary() {
+    $(".seconds").hide();
+    stop();
     $(".quiz").hide();
     $(".results").show();
     $(".results p1").text('Correct: ' + correctAnswer + ' out of ' + question.length + '! :)')
@@ -148,7 +153,10 @@ function showSummary() {
 function restartQuiz() {
     correctAnswer = 0;
     currentQuestion = 0;
-    $('.results').hide();
-    $('.quiz').show();
+    $(".results").hide();
+    $(".quiz").show();
     showQuestion();
+    correctAnswer = 0;
+    incorrectAnswer = 0;
+
 }
