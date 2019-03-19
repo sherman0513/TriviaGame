@@ -105,6 +105,8 @@ function endGame() {
 //answers in the question array with what is in the variable
 function showQuestion() {
     timer();
+    $(".seconds").show();
+    $(".quiz").show();
     current = question[currentQuestion];
     $(".quiz h2").text(current.q);
     $(".quiz ul").html("");
@@ -121,12 +123,12 @@ function checkAnswer(guess) {
     if (current.correctAnswer === guess) {
         correctAnswer++;
         // stop();
-        $('.answer').text('Correct!');
+        $('.answer').html('Correct!');
         // $('.answer').fadeOut(3000);
     } else {
         incorrectAnswer++;
         // stop();
-        $('.answer1').text('Wrong!');
+        $('.answer').html('Wrong!');
         // $('.answer1').fadeOut(3000);
     }
 
@@ -136,7 +138,9 @@ function checkAnswer(guess) {
     if (currentQuestion >= question.length) {
         showSummary();
     } else {
-        showQuestion();
+        $(".seconds").hide();
+        $(".quiz").hide();
+        setTimeout(showQuestion, 5000);
     };
 };
 
