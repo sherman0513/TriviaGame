@@ -118,6 +118,7 @@ function showQuestion() {
         var pick = current.answers[i];
         $(".quiz ul").append("<li id='" + i + "'>" + pick + "</li>");
     };
+    $(".answer").empty();
 };
 
 //checks if the answer is correct if it is correct it will add an increment to the score variable, if it is not, nothing happens.
@@ -151,6 +152,7 @@ function checkAnswer(guess) {
 //hides the quiz and timer and shows the summary page of how many questions were guessed correct and incorrect
 function showSummary() {
     $(".seconds").hide();
+    $(".answer").hide();
     stop();
     $(".quiz").hide();
     $(".results").show();
