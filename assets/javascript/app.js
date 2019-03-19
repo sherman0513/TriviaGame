@@ -81,6 +81,7 @@ $(document).ready(function () {
 
 // have my function timer
 // having trouble getting timer to reset
+// timer is now working
 function timer() {
     intervalId = setInterval(decrement, 1000)
 }
@@ -132,7 +133,7 @@ function checkAnswer(guess) {
         incorrectAnswer++;
         // stop();
         $('.answer').html("<h2>Wrong!<h2>");
-        // $('.answer1').fadeOut(3000);
+        // $('.answer').fadeOut(3000);
     }
 
     currentQuestion++;
